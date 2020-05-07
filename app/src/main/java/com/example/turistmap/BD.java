@@ -33,7 +33,7 @@ public class BD extends SQLiteOpenHelper {
                 "id_dominio_tipo integer" +
                 ")");
 
-        db.execSQL("create table Dominio(" +
+        db.execSQL("create table TipoSitio(" +
                 "id_dominio integer primary key," +
                 "nombre text" +
                 ")");
