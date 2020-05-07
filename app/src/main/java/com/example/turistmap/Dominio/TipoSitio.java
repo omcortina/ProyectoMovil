@@ -42,7 +42,7 @@ public class TipoSitio {
         registro.put("id_dominio", this.Id);
         registro.put("nombre", this.Nombre);
 
-        db.insert("Dominio", null, registro);
+        db.insert("TipoSitio", null, registro);
         db.close();
     }
 
@@ -51,15 +51,15 @@ public class TipoSitio {
         SQLiteDatabase db = admin.getWritableDatabase();
         List<TipoSitio> lista = new ArrayList<>();
 
-        String sql = "select * from Dominio";
+        String sql = "select * from TipoSitio";
         Cursor cursor = db.rawQuery(sql, null);
 
         if (cursor.moveToFirst()){
             do{
-                TipoSitio dominio = new TipoSitio();
-                dominio.Id = cursor.getInt(0);
-                dominio.Nombre = cursor.getString(1);
-                lista.add(dominio);
+                TipoSitio tipoSitio = new TipoSitio();
+                tipoSitio.Id = cursor.getInt(0);
+                tipoSitio.Nombre = cursor.getString(1);
+                lista.add(tipoSitio);
             }while(cursor.moveToNext());
             return lista;
         }

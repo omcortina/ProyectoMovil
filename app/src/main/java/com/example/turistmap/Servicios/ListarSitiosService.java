@@ -74,7 +74,7 @@ public class ListarSitiosService extends AsyncTask<Void,Void,String> {
                 BD admin = new BD(context, Config.database_name, null, 1);
                 SQLiteDatabase db = admin.getWritableDatabase();
 
-                db.execSQL("DELETE FROM Dominio");
+                db.execSQL("DELETE FROM TipoSitio");
                 db.execSQL("DELETE FROM Sitio");
                 db.close();
 
