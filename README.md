@@ -9,7 +9,7 @@ actividades turísticas (avistamiento de aves, ciclo montañismo, caminatas, ent
 Smartphone con sistema operativo Android (mayores a la version 4.1)
 
 ¿Cómo instalar TuristMap?
-1. Descargar el archivo TuristMap.apk que se encuentra en el repositorio en tu Smartphone.
+1. Descargar el archivo TuristMap.apk que se encuentra en el siguiente enlace https://drive.google.com/drive/u/1/folders/1fg2tjc5wlNWLagJCw8BTISxh6_wOBapE en tu Smartphone.
 2. Activar la opcion origenes desconocidos en el Smatphone.
 3. Abrir el archivo descargado e instalarlo.
 
