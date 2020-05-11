@@ -98,9 +98,14 @@ public class IndexCliente extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         //PolylineOptions lineOptions = null;
         ArrayList<LatLng> points = null;
-        posicionActual = new LatLng(getMyPosition().getLatitude(), getMyPosition().getLongitude());
-        mMap.addMarker(new MarkerOptions().position(posicionActual).title("Aqui estoy yo"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posicionActual,14));
+        if(getMyPosition() != null) {
+            posicionActual = new LatLng(getMyPosition().getLatitude(), getMyPosition().getLongitude());
+            mMap.addMarker(new MarkerOptions().position(posicionActual).title("Aqui estoy yo"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posicionActual,14));
+        }else{
+            posicionActual = new LatLng(10.4654325,-73.2604819);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posicionActual,13));
+        }
 
         Intent intent = getIntent();
         int id_evento = intent.getIntExtra("id_evento",0);
@@ -108,12 +113,13 @@ public class IndexCliente extends FragmentActivity implements OnMapReadyCallback
             points = new ArrayList<LatLng>();
             //lineOptions = new PolylineOptions();
             List<Sitio> array_sitios = SitioEvento.FindAllSitiosPorEvento(this, id_evento);
-            points.add(posicionActual);
+            //points.add(posicionActual);
             for(Sitio s: array_sitios){
                 double latitud = Double.parseDouble(s.getLatitud());
                 double longitud = Double.parseDouble(s.getLongitud());
                 LatLng punto = new LatLng(latitud, longitud);
                 mMap.addMarker(new MarkerOptions().position(punto).title(s.getNombre()));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posicionActual,13));
                 points.add(punto);
             }
 
@@ -154,12 +160,13 @@ public class IndexCliente extends FragmentActivity implements OnMapReadyCallback
             points = new ArrayList<LatLng>();
             //lineOptions = new PolylineOptions();
             List<Sitio> array_sitios_actividad = SitioActividad.FindAllSitiosPorActividad(this, id_actividad);
-            points.add(posicionActual);
+            //points.add(posicionActual);
             for(Sitio s: array_sitios_actividad){
                 double latitud = Double.parseDouble(s.getLatitud());
                 double longitud = Double.parseDouble(s.getLongitud());
                 LatLng punto = new LatLng(latitud, longitud);
                 mMap.addMarker(new MarkerOptions().position(punto).title(s.getNombre()));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posicionActual,13));
                 points.add(punto);
             }
 
@@ -202,6 +209,7 @@ public class IndexCliente extends FragmentActivity implements OnMapReadyCallback
             double longitud_sitio = Double.parseDouble(sitio.getLongitud());
             LatLng punto_sitio = new LatLng(latitud_sitio, longitud_sitio);
             mMap.addMarker(new MarkerOptions().position(punto_sitio).title(sitio.getNombre()));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(punto_sitio,15));
         }
     }
 

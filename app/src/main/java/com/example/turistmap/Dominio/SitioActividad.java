@@ -47,7 +47,6 @@ public class SitioActividad {
         SQLiteDatabase db = admin.getWritableDatabase();
 
         ContentValues registro = new ContentValues();
-        registro.put("id_sitio_actividad", this.Id);
         registro.put("id_sitio", this.id_sitio);
         registro.put("id_actividad", this.id_actividad);
 

@@ -87,10 +87,11 @@ public class ListarActividadesService extends AsyncTask<Void,Void,String> {
                     actividad.setRutaFoto(json.getString("imagen"));
 
                     SitioActividad.EliminarSitioActividad(context, actividad.getId());
-                    Sitio sitio = new Sitio();
-                    SitioActividad sitioActividad = new SitioActividad();
+
                     JSONArray array_sitios = json.getJSONArray("sitios");
                     for (int j=0; j<array_sitios.length(); j++) {
+                        Sitio sitio = new Sitio();
+                        SitioActividad sitioActividad = new SitioActividad();
                         JSONObject json_sitio = array_sitios.getJSONObject(j);
                         sitio.setId(json_sitio.getInt("id_sitio"));
                         sitio.setCodigo(json_sitio.getString("codigo"));
@@ -103,8 +104,8 @@ public class ListarActividadesService extends AsyncTask<Void,Void,String> {
                         sitio.setIdDominioTipo(json_sitio.getInt("id_dominio_tipo"));
                         sitio.Save(this.context);
 
-                        sitioActividad.setId_actividad(json.getInt("id_actividad"));
-                        sitioActividad.setId_sitio(json_sitio.getInt("id_sitio"));
+                        sitioActividad.setId_actividad(actividad.getId());
+                        sitioActividad.setId_sitio(sitio.getId());
                         sitioActividad.Save(this.context);
                     }
                     actividad.Save(this.context);

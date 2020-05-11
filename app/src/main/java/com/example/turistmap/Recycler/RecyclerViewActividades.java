@@ -58,7 +58,7 @@ public class RecyclerViewActividades extends RecyclerView.Adapter<RecyclerViewAc
         holder.txt_descripcion_actividad.setText("Descripcion: "+actividad.getDescripcion());
         Picasso.get()
                 .load(Routes.directorio_imagenes+actividad.getRutaFoto())
-                //.resize(70,70)
+                //.resize(120,70)
                 //.placeholder(R)
                 //.transform(new CropCircleTransformation())
                 .into(holder.img_actividad);
