@@ -17,10 +17,16 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPager_imagenes_actividad"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+
             <ImageView
                 android:id="@+id/img_actividad"
                 android:layout_width="match_parent"
                 android:layout_height="207dp"
+                android:visibility="gone"
                 app:srcCompat="@drawable/loginn" />
 
             <TextView

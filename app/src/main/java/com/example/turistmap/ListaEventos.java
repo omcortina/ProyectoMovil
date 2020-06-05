@@ -5,8 +5,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.turistmap.Dominio.Evento;
-import com.example.turistmap.Recycler.RecyclerViewEventos;
+import com.example.turistmap.Model.Evento;
+import com.example.turistmap.GeneradoresLista.RecyclerViewEventos;
 
 public class ListaEventos extends AppCompatActivity {
 

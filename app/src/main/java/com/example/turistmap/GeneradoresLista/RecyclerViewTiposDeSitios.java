@@ -1,4 +1,4 @@
-package com.example.turistmap.Recycler;
+package com.example.turistmap.GeneradoresLista;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,8 +10,8 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.turistmap.Dominio.Sitio;
-import com.example.turistmap.Dominio.TipoSitio;
+import com.example.turistmap.Model.Sitio;
+import com.example.turistmap.Model.TipoSitio;
 import com.example.turistmap.ListaSitios;
 import com.example.turistmap.R;
 

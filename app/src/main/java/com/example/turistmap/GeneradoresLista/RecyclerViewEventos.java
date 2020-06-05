@@ -1,4 +1,4 @@
-package com.example.turistmap.Recycler;
+package com.example.turistmap.GeneradoresLista;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,9 +10,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.turistmap.Dominio.Evento;
-import com.example.turistmap.Dominio.Sitio;
+import com.example.turistmap.Model.Evento;
+import com.example.turistmap.Model.Sitio;
 import com.example.turistmap.IndexCliente;
 import com.example.turistmap.R;
 import com.example.turistmap.Routes.Routes;
@@ -24,6 +25,7 @@ public class RecyclerViewEventos extends RecyclerView.Adapter<RecyclerViewEvento
     public static class ViewHolder extends RecyclerView.ViewHolder{
         private TextView txt_nombre_evento, txt_fecha_inicio_evento, txt_fecha_fin_evento, txt_descripcion_evento;
         private LinearLayout btn_mostrar_sitios_evento, btn_evento_info;
+        private RecyclerView recycler_imagenes_evento;
         private ImageView img_evento;
 
         public ViewHolder(@NonNull View itemView) {
@@ -34,6 +36,7 @@ public class RecyclerViewEventos extends RecyclerView.Adapter<RecyclerViewEvento
             txt_descripcion_evento = (TextView) itemView.findViewById(R.id.txt_descripcion_evento);
             btn_mostrar_sitios_evento = (LinearLayout) itemView.findViewById(R.id.btn_mostrar_sitios_evento);
             btn_evento_info = (LinearLayout) itemView.findViewById(R.id.btn_evento_info);
+            recycler_imagenes_evento = (RecyclerView) itemView.findViewById(R.id.recycler_imagenes_evento);
             img_evento = (ImageView) itemView.findViewById(R.id.img_evento);
         }
     }
@@ -63,12 +66,11 @@ public class RecyclerViewEventos extends RecyclerView.Adapter<RecyclerViewEvento
         holder.txt_fecha_inicio_evento.setText("Fecha Inicio: "+evento.getFechaInicio());
         holder.txt_fecha_fin_evento.setText("Fecha Fin: "+evento.getFechaFin());
         holder.txt_descripcion_evento.setText("Descripcion: "+evento.getDescripcion());
-        Picasso.get()
-                .load(Routes.directorio_imagenes+evento.getRutaFoto())
-                //.resize(70,70)
-                //.placeholder(R)
-                //.transform(new CropCircleTransformation())
-                .into(holder.img_evento);
+
+        holder.recycler_imagenes_evento.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+
+        RecyclerViewImagenesEvento adapter = new RecyclerViewImagenesEvento(Evento.ImagenesDelEvento(context, evento.getId()), context);
+        holder.recycler_imagenes_evento.setAdapter(adapter);
 
         holder.btn_evento_info.setOnClickListener(new View.OnClickListener() {
             @Override

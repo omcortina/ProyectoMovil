@@ -1,4 +1,4 @@
-package com.example.turistmap.Servicios;
+package com.example.turistmap.Controllers;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -8,9 +8,10 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 import com.example.turistmap.BD;
 import com.example.turistmap.Config.Config;
-import com.example.turistmap.Dominio.Actividad;
-import com.example.turistmap.Dominio.Sitio;
-import com.example.turistmap.Dominio.SitioActividad;
+import com.example.turistmap.Model.Actividad;
+import com.example.turistmap.Model.Galeria;
+import com.example.turistmap.Model.Sitio;
+import com.example.turistmap.Model.SitioActividad;
 import com.example.turistmap.ListaActividades;
 import com.example.turistmap.Routes.Routes;
 
@@ -84,7 +85,6 @@ public class ListarActividadesService extends AsyncTask<Void,Void,String> {
                     actividad.setCodigo(json.getString("codigo"));
                     actividad.setNombre(json.getString("nombre"));
                     actividad.setDescripcion(json.getString("descripcion"));
-                    actividad.setRutaFoto(json.getString("imagen"));
 
                     SitioActividad.EliminarSitioActividad(context, actividad.getId());
 
@@ -107,6 +107,17 @@ public class ListarActividadesService extends AsyncTask<Void,Void,String> {
                         sitioActividad.setId_actividad(actividad.getId());
                         sitioActividad.setId_sitio(sitio.getId());
                         sitioActividad.Save(this.context);
+                    }
+
+                    JSONArray array_imagenes = json.getJSONArray("imagenes");
+                    for (int k=0; k<array_imagenes.length(); k++){
+                        Galeria galeria = new Galeria();
+                        JSONObject json_imagen = array_imagenes.getJSONObject(k);
+                        galeria.setId(json_imagen.getInt("id_galeria"));
+                        galeria.setImagen(json_imagen.getString("imagen"));
+                        galeria.setId_dominio_tipo_eventualidad(json_imagen.getInt("id_dominio_tipo_eventualidad"));
+                        galeria.setId_eventualidad(json_imagen.getInt("id_eventualidad"));
+                        galeria.Save(context);
                     }
                     actividad.Save(this.context);
                 }

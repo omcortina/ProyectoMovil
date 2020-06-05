@@ -1,4 +1,4 @@
-package com.example.turistmap.Dominio;
+package com.example.turistmap.Model;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -15,7 +15,6 @@ public class Actividad {
     public String Codigo;
     public String Nombre;
     public String Descripcion;
-    public String RutaFoto;
 
     public Actividad() {
     }
@@ -52,13 +51,6 @@ public class Actividad {
         Descripcion = descripcion;
     }
 
-    public String getRutaFoto() {
-        return RutaFoto;
-    }
-
-    public void setRutaFoto(String rutaFoto) {
-        RutaFoto = rutaFoto;
-    }
 
     public void Save(Context context){
         BD admin = new BD(context, Config.database_name, null, 1);
@@ -69,7 +61,6 @@ public class Actividad {
         registro.put("codigo", this.Codigo);
         registro.put("nombre", this.Nombre);
         registro.put("descripcion", this.Descripcion);
-        registro.put("ruta_foto", this.RutaFoto);
         db.insert("Actividad", null, registro);
         db.close();
     }
@@ -86,8 +77,6 @@ public class Actividad {
             this.Codigo = cursor.getString(1);
             this.Nombre = cursor.getString(2);
             this.Descripcion = cursor.getString(3);
-            this.RutaFoto = cursor.getString(4);
-
             return this;
         }
         db.close();
@@ -109,7 +98,6 @@ public class Actividad {
                 actividad.Codigo = cursor.getString(1);
                 actividad.Nombre = cursor.getString(2);
                 actividad.Descripcion = cursor.getString(3);
-                actividad.RutaFoto = cursor.getString(4);
                 lista.add(actividad);
             }while(cursor.moveToNext());
             db.close();
@@ -117,5 +105,23 @@ public class Actividad {
         }
         db.close();
         return null;
+    }
+
+    public static List<Galeria> ImagenesDeActividd(Context context, int id){
+        BD admin = new BD(context, Config.database_name, null, 1);
+        SQLiteDatabase db = admin.getWritableDatabase();
+        List<Galeria> lista = new ArrayList<>();
+
+        String sql = "select * from Galeria where id_dominio_tipo_eventualidad=13 and id_eventualidad="+id;
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToFirst()){
+            do{
+
+                int id_galeria = cursor.getInt(0);
+                lista.add(new Galeria().Find(context, id_galeria));
+            }while(cursor.moveToNext());
+        }
+        db.close();
+        return lista;
     }
 }

@@ -1,4 +1,4 @@
-package com.example.turistmap.Dominio;
+package com.example.turistmap.Model;
 
 import android.content.ContentValues;
 import android.content.Context;

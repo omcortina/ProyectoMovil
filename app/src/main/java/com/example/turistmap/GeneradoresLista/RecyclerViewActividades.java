@@ -1,4 +1,4 @@
-package com.example.turistmap.Recycler;
+package com.example.turistmap.GeneradoresLista;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,9 +11,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
-import com.example.turistmap.Dominio.Actividad;
+import com.example.turistmap.Model.Actividad;
 import com.example.turistmap.IndexCliente;
+import com.example.turistmap.Model.Evento;
 import com.example.turistmap.R;
 import com.example.turistmap.Routes.Routes;
 import com.squareup.picasso.Picasso;
@@ -25,6 +27,7 @@ public class RecyclerViewActividades extends RecyclerView.Adapter<RecyclerViewAc
         private TextView txt_nombre_actividad, txt_descripcion_actividad;
         private LinearLayout btn_mostrar_sitios_actividad, btn_actividad_info;
         private ImageView img_actividad;
+        private ViewPager viewPager_imagenes_actividad;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -33,6 +36,7 @@ public class RecyclerViewActividades extends RecyclerView.Adapter<RecyclerViewAc
             btn_mostrar_sitios_actividad = (LinearLayout) itemView.findViewById(R.id.btn_mostrar_sitios_actividad);
             btn_actividad_info = (LinearLayout) itemView.findViewById(R.id.btn_actividad_info);
             img_actividad = (ImageView) itemView.findViewById(R.id.img_actividad);
+            viewPager_imagenes_actividad = (ViewPager) itemView.findViewById(R.id.viewPager_imagenes_actividad);
         }
     }
 
@@ -56,12 +60,9 @@ public class RecyclerViewActividades extends RecyclerView.Adapter<RecyclerViewAc
         final Actividad actividad = listaActividades.get(position);
         holder.txt_nombre_actividad.setText(actividad.getNombre().toUpperCase());
         holder.txt_descripcion_actividad.setText("Descripcion: "+actividad.getDescripcion());
-        Picasso.get()
-                .load(Routes.directorio_imagenes+actividad.getRutaFoto())
-                //.resize(120,70)
-                //.placeholder(R)
-                //.transform(new CropCircleTransformation())
-                .into(holder.img_actividad);
+
+         ViewPagerActividades viewPagerActividades = new ViewPagerActividades(Actividad.ImagenesDeActividd(context, actividad.getId()), context);
+         holder.viewPager_imagenes_actividad.setAdapter(viewPagerActividades);
 
         holder.btn_actividad_info.setOnClickListener(new View.OnClickListener() {
             @Override

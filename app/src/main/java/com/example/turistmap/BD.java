@@ -21,6 +21,13 @@ public class BD extends SQLiteOpenHelper {
                 "tipo_usuario text" +
                 ")");
 
+        db.execSQL("create table Galeria(" +
+                "id_galeria integer primary key," +
+                "imagen text," +
+                "id_dominio_tipo_eventualidad integer," +
+                "id_eventualidad integer" +
+                ")");
+
         db.execSQL("create table Sitio(" +
                 "id_sitio integer primary key," +
                 "codigo text," +
@@ -44,16 +51,14 @@ public class BD extends SQLiteOpenHelper {
                 "nombre text," +
                 "fecha_inicio text," +
                 "fecha_fin text," +
-                "descripcion text," +
-                "ruta_foto text" +
+                "descripcion text" +
                 ")");
 
         db.execSQL("create table Actividad(" +
                 "id_actividad integer primary key," +
                 "codigo text," +
                 "nombre text," +
-                "descripcion text," +
-                "ruta_foto text" +
+                "descripcion text" +
                 ")");
 
         db.execSQL("create table SitioEvento(" +

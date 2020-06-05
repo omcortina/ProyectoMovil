@@ -1,4 +1,4 @@
-package com.example.turistmap.Recycler;
+package com.example.turistmap.GeneradoresLista;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.turistmap.Dominio.Sitio;
+import com.example.turistmap.Model.Sitio;
 import com.example.turistmap.IndexCliente;
 import com.example.turistmap.R;
 import com.example.turistmap.Routes.Routes;

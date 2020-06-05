@@ -1,4 +1,4 @@
-package com.example.turistmap.Servicios;
+package com.example.turistmap.Controllers;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -8,9 +8,10 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 import com.example.turistmap.BD;
 import com.example.turistmap.Config.Config;
-import com.example.turistmap.Dominio.Evento;
-import com.example.turistmap.Dominio.Sitio;
-import com.example.turistmap.Dominio.SitioEvento;
+import com.example.turistmap.Model.Evento;
+import com.example.turistmap.Model.Galeria;
+import com.example.turistmap.Model.Sitio;
+import com.example.turistmap.Model.SitioEvento;
 import com.example.turistmap.ListaEventos;
 import com.example.turistmap.Routes.Routes;
 
@@ -86,7 +87,6 @@ public class ListarEventosService extends AsyncTask<Void,Void,String> {
                     evento.setDescripcion(json.getString("descripcion"));
                     evento.setFechaInicio(json.getString("fecha_inicio"));
                     evento.setFechaFin(json.getString("fecha_fin"));
-                    evento.setRutaFoto(json.getString("imagen"));
 
                     SitioEvento.EliminarSitiosDelEvento(context, evento.getId());
 
@@ -109,6 +109,17 @@ public class ListarEventosService extends AsyncTask<Void,Void,String> {
                         sitioEvento.setId_evento(evento.getId());
                         sitioEvento.setId_sitio(sitio.getId());
                         sitioEvento.Save(this.context);
+                    }
+
+                    JSONArray array_imagenes = json.getJSONArray("imagenes");
+                    for (int k=0; k<array_imagenes.length(); k++){
+                        Galeria galeria = new Galeria();
+                        JSONObject json_imagen = array_imagenes.getJSONObject(k);
+                        galeria.setId(json_imagen.getInt("id_galeria"));
+                        galeria.setImagen(json_imagen.getString("imagen"));
+                        galeria.setId_dominio_tipo_eventualidad(json_imagen.getInt("id_dominio_tipo_eventualidad"));
+                        galeria.setId_eventualidad(json_imagen.getInt("id_eventualidad"));
+                        galeria.Save(context);
                     }
                     evento.Save(this.context);
                 }

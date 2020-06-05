@@ -5,8 +5,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.turistmap.Dominio.Actividad;
-import com.example.turistmap.Recycler.RecyclerViewActividades;
+import com.example.turistmap.Model.Actividad;
+import com.example.turistmap.GeneradoresLista.RecyclerViewActividades;
 
 public class ListaActividades extends AppCompatActivity {
     private RecyclerView recyclerView;

@@ -5,8 +5,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.turistmap.Dominio.TipoSitio;
-import com.example.turistmap.Recycler.RecyclerViewTiposDeSitios;
+import com.example.turistmap.Model.TipoSitio;
+import com.example.turistmap.GeneradoresLista.RecyclerViewTiposDeSitios;
 
 public class ListaSitios extends AppCompatActivity {
     private RecyclerView recyclerView_tipos_sitios;

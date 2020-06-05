@@ -1,4 +1,4 @@
-package com.example.turistmap.Dominio;
+package com.example.turistmap.Model;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -17,7 +17,6 @@ public class Evento {
     private String FechaInicio;
     private String FechaFin;
     private String Descripcion;
-    private String RutaFoto;
     private ArrayList<Sitio> Sitios;
 
     public ArrayList<Sitio> getSitios() {
@@ -79,14 +78,6 @@ public class Evento {
         Descripcion = descripcion;
     }
 
-    public String getRutaFoto() {
-        return RutaFoto;
-    }
-
-    public void setRutaFoto(String rutaFoto) {
-        RutaFoto = rutaFoto;
-    }
-
     public void Save(Context context){
         BD admin = new BD(context, Config.database_name, null, 1);
         SQLiteDatabase db = admin.getWritableDatabase();
@@ -98,7 +89,6 @@ public class Evento {
         registro.put("fecha_inicio", this.FechaInicio);
         registro.put("fecha_fin", this.FechaFin);
         registro.put("descripcion", this.Descripcion);
-        registro.put("ruta_foto", this.RutaFoto);
 
         db.insert("Evento", null, registro);
         db.close();
@@ -118,7 +108,6 @@ public class Evento {
             this.FechaInicio = cursor.getString(3);
             this.FechaFin = cursor.getString(4);
             this.Descripcion = cursor.getString(5);
-            this.RutaFoto = cursor.getString(6);
             return this;
         }
         db.close();
@@ -142,7 +131,6 @@ public class Evento {
                 evento.FechaInicio = cursor.getString(3);
                 evento.FechaFin = cursor.getString(4);
                 evento.Descripcion = cursor.getString(5);
-                evento.RutaFoto = cursor.getString(6);
                 lista.add(evento);
             }while(cursor.moveToNext());
             return lista;
@@ -151,5 +139,21 @@ public class Evento {
         return null;
     }
 
+    public static List<Galeria> ImagenesDelEvento(Context context, int id){
+        BD admin = new BD(context, Config.database_name, null, 1);
+        SQLiteDatabase db = admin.getWritableDatabase();
+        List<Galeria> lista = new ArrayList<>();
 
+        String sql = "select * from Galeria where id_dominio_tipo_eventualidad=14 and id_eventualidad="+id;
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToFirst()){
+            do{
+
+                int id_galeria = cursor.getInt(0);
+                lista.add(new Galeria().Find(context, id_galeria));
+            }while(cursor.moveToNext());
+        }
+        db.close();
+        return lista;
+    }
 }

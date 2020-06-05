@@ -1,4 +1,4 @@
-package com.example.turistmap.Servicios;
+package com.example.turistmap.Controllers;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -8,8 +8,8 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 import com.example.turistmap.BD;
 import com.example.turistmap.Config.Config;
-import com.example.turistmap.Dominio.Sitio;
-import com.example.turistmap.Dominio.TipoSitio;
+import com.example.turistmap.Model.Sitio;
+import com.example.turistmap.Model.TipoSitio;
 import com.example.turistmap.ListaSitios;
 import com.example.turistmap.Routes.Routes;
 
