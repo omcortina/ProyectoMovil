@@ -61,7 +61,7 @@ public class RecyclerViewActividades extends RecyclerView.Adapter<RecyclerViewAc
         holder.txt_nombre_actividad.setText(actividad.getNombre().toUpperCase());
         holder.txt_descripcion_actividad.setText("Descripcion: "+actividad.getDescripcion());
 
-         ViewPagerActividades viewPagerActividades = new ViewPagerActividades(Actividad.ImagenesDeActividd(context, actividad.getId()), context);
+         ViewPagerActividades viewPagerActividades = new ViewPagerActividades(Actividad.ImagenesDeActividad(context, actividad.getId()), context);
          holder.viewPager_imagenes_actividad.setAdapter(viewPagerActividades);
 
         holder.btn_actividad_info.setOnClickListener(new View.OnClickListener() {

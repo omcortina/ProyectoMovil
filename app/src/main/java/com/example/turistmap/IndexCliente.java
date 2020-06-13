@@ -62,6 +62,7 @@ public class IndexCliente extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+
         mapFragment.getMapAsync(this);
         View itemEvento = (View) findViewById(R.id.item_eventos);
         View itemActividad = (View) findViewById(R.id.item_actividades);
