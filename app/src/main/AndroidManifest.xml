@@ -11,10 +11,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.Design.Light.NoActionBar">
-
-        <activity android:name=".ListaSitios"></activity>
+        android:theme="@style/Theme.Design.Light.NoActionBar"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".ListaSitiosFavoritos"></activity>
+        <activity android:name=".ListaSitios" />
         <activity android:name=".ListaActividades" />
         <activity android:name=".ListaEventos" />
 

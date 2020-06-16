@@ -77,10 +77,12 @@ public class RecyclerViewActividades extends RecyclerView.Adapter<RecyclerViewAc
         holder.btn_mostrar_sitios_actividad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, IndexCliente.class);
+                Intent intentActividad = new Intent(context, IndexCliente.class);
                 int id_actividad = actividad.getId();
-                intent.putExtra("id_actividad", id_actividad);
-                context.startActivity(intent);
+                String nombreActividad = actividad.getNombre();
+                intentActividad.putExtra("nombreActividad",nombreActividad);
+                intentActividad.putExtra("id_actividad", id_actividad);
+                context.startActivity(intentActividad);
             }
         });
     }

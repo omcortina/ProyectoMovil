@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item
         android:id="@+id/item_eventos"
         android:icon="@drawable/icon_evento"
-        android:title="Eventos"/>
+        android:title=""/>
 
     <item
         android:id="@+id/item_actividades"
         android:icon="@drawable/icon_activity"
-        android:title="Actividades"/>
+        android:title=""/>
 
     <item
         android:id="@+id/item_sitios"
         android:icon="@drawable/icon_sites"
-        android:title="Sitios"/>
+        android:title=""/>
+    <item
+        android:id="@+id/item_sitios_favoritos"
+        android:icon="@drawable/ic_favorite"
+        android:title="" />
+
 
 </menu>

@@ -101,10 +101,12 @@ public class RecyclerViewEventos extends RecyclerView.Adapter<RecyclerViewEvento
         holder.btn_mostrar_sitios_evento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, IndexCliente.class);
+                Intent intentEvento = new Intent(context, IndexCliente.class);
                 int id_evento = evento.getId();
-                intent.putExtra("id_evento", id_evento);
-                context.startActivity(intent);
+                String nombreEvento = evento.getNombre();
+                intentEvento.putExtra("nombreEvento",nombreEvento);
+                intentEvento.putExtra("id_evento", id_evento);
+                context.startActivity(intentEvento);
             }
         });
 
