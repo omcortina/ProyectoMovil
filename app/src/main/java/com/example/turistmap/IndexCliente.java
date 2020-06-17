@@ -58,7 +58,7 @@ public class IndexCliente extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     JSONObject json;
     LatLng posicionActual;
-    private TextView txt_nombre_sitio, txt_direccion_sitio, txt_descripcion_sitio;
+    private TextView txt_nombre_sitio, txt_direccion_sitio, txt_descripcion_sitio, txt_favorito;
     private RoundedImageView imagen_sitio;
     private Toolbar nombreEventualidad;
     private LinearLayout btn_favorito;
@@ -163,10 +163,14 @@ public class IndexCliente extends FragmentActivity implements OnMapReadyCallback
                         imagen_sitio = bottomSheetView.findViewById(R.id.imagen_sitio);
                         btn_favorito = (LinearLayout) bottomSheetView.findViewById(R.id.btn_favorito);
                         img_favorito = bottomSheetView.findViewById(R.id.img_favorito);
+                        txt_favorito = bottomSheetView.findViewById(R.id.txt_favorito);
                         if(sitio.getFavorito() == 1){
                             img_favorito.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_red));
+                            txt_favorito.setText("Quitar de favoritos");
                         }else{
                             img_favorito.setImageDrawable(getResources().getDrawable(R.drawable.icon_favoriteee));
+                            txt_favorito.setText("Añadir a favoritos");
+
                         }
                         Picasso.get()
                                 .load(Routes.directorio_imagenes+sitio.getRutaFoto())
@@ -182,8 +186,10 @@ public class IndexCliente extends FragmentActivity implements OnMapReadyCallback
                             public void onClick(View v) {
                                 if(sitio.getFavorito() == 0){
                                     img_favorito.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_red));
+                                    txt_favorito.setText("Quitar de favoritos");
                                 }else{
                                     img_favorito.setImageDrawable(getResources().getDrawable(R.drawable.icon_favoriteee));
+                                    txt_favorito.setText("Añadir a favoritos");
                                 }
                                 if(sitio.EstablecerEstadoFavorito(getApplicationContext())){
                                     if(sitio.getFavorito() == 1) {
@@ -236,10 +242,13 @@ public class IndexCliente extends FragmentActivity implements OnMapReadyCallback
                         imagen_sitio = bottomSheetView.findViewById(R.id.imagen_sitio);
                         btn_favorito = (LinearLayout) bottomSheetView.findViewById(R.id.btn_favorito);
                         img_favorito = bottomSheetView.findViewById(R.id.img_favorito);
+                        txt_favorito = bottomSheetView.findViewById(R.id.txt_favorito);
                         if(sitio.getFavorito() == 1){
                             img_favorito.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_red));
+                            txt_favorito.setText("Quitar de favoritos");
                         }else{
                             img_favorito.setImageDrawable(getResources().getDrawable(R.drawable.icon_favoriteee));
+                            txt_favorito.setText("Añadir a favoritos");
                         }
                         Picasso.get()
                                 .load(Routes.directorio_imagenes+sitio.getRutaFoto())
@@ -255,8 +264,10 @@ public class IndexCliente extends FragmentActivity implements OnMapReadyCallback
                             public void onClick(View v) {
                                 if(sitio.getFavorito() == 0){
                                     img_favorito.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_red));
+                                    txt_favorito.setText("Quitar de favoritos");
                                 }else{
                                     img_favorito.setImageDrawable(getResources().getDrawable(R.drawable.icon_favoriteee));
+                                    txt_favorito.setText("Añadir a favoritos");
                                 }
                                 if(sitio.EstablecerEstadoFavorito(getApplicationContext())){
                                     if(sitio.getFavorito() == 1) {
