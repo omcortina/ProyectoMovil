@@ -164,6 +164,7 @@ public class IndexCliente extends FragmentActivity implements OnMapReadyCallback
                         btn_favorito = (LinearLayout) bottomSheetView.findViewById(R.id.btn_favorito);
                         img_favorito = bottomSheetView.findViewById(R.id.img_favorito);
                         txt_favorito = bottomSheetView.findViewById(R.id.txt_favorito);
+                        //probar cambios
                         if(sitio.getFavorito() == 1){
                             img_favorito.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_red));
                             txt_favorito.setText("Quitar de favoritos");
