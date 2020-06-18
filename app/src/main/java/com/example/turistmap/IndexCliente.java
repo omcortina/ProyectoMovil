@@ -8,14 +8,21 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+//import android.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 
+
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
@@ -51,9 +58,13 @@ public class IndexCliente extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     JSONObject json;
     LatLng posicionActual;
-    private TextView txt_nombre_sitio, txt_direccion_sitio, txt_descripcion_sitio;
+    private TextView txt_nombre_sitio, txt_direccion_sitio, txt_descripcion_sitio, txt_favorito;
     private RoundedImageView imagen_sitio;
+    private Toolbar nombreEventualidad;
+    private LinearLayout btn_favorito;
+    private ImageView img_favorito;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,10 +73,14 @@ public class IndexCliente extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+
         mapFragment.getMapAsync(this);
         View itemEvento = (View) findViewById(R.id.item_eventos);
         View itemActividad = (View) findViewById(R.id.item_actividades);
         View itemSitios = (View) findViewById(R.id.item_sitios);
+        View itemMisSitios = (View) findViewById(R.id.item_sitios_favoritos);
+        nombreEventualidad = (Toolbar) findViewById(R.id.nombreEventualidad);
+
 
 
         itemEvento.setOnClickListener(new View.OnClickListener() {
@@ -91,8 +106,17 @@ public class IndexCliente extends FragmentActivity implements OnMapReadyCallback
                 servicio.execute();
             }
         });
+
+        itemMisSitios.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(IndexCliente.this, ListaSitiosFavoritos.class);
+                startActivity(intent);
+            }
+        });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -107,9 +131,11 @@ public class IndexCliente extends FragmentActivity implements OnMapReadyCallback
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posicionActual,13));
         }
 
-        Intent intent = getIntent();
-        int id_evento = intent.getIntExtra("id_evento",0);
+        Intent intentEvento = getIntent();
+        int id_evento = intentEvento.getIntExtra("id_evento",0);
         if (id_evento != 0){
+
+            nombreEventualidad.setTitle(intentEvento.getStringExtra("nombreEvento"));
             points = new ArrayList<LatLng>();
             //lineOptions = new PolylineOptions();
             List<Sitio> array_sitios = SitioEvento.FindAllSitiosPorEvento(this, id_evento);
@@ -127,7 +153,7 @@ public class IndexCliente extends FragmentActivity implements OnMapReadyCallback
                 @Override
                 public boolean onMarkerClick(Marker marker) {
                     LatLng posicion_sitio = marker.getPosition();
-                    Sitio sitio = Sitio.FindMarkerSitio(IndexCliente.this, posicion_sitio.latitude, posicion_sitio.longitude);
+                    final Sitio sitio = Sitio.FindMarkerSitio(IndexCliente.this, posicion_sitio.latitude, posicion_sitio.longitude);
                     if(sitio != null){
                         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(IndexCliente.this, R.style.BottomSheetDialogTheme);
                         View bottomSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_bottom_sheet_sitios, (LinearLayout) findViewById(R.id.bottom_sheet_sitio));
@@ -135,7 +161,17 @@ public class IndexCliente extends FragmentActivity implements OnMapReadyCallback
                         txt_direccion_sitio = bottomSheetView.findViewById(R.id.txt_direccion_sitio);
                         txt_descripcion_sitio = bottomSheetView.findViewById(R.id.txt_descripcion_sitio);
                         imagen_sitio = bottomSheetView.findViewById(R.id.imagen_sitio);
+                        btn_favorito = (LinearLayout) bottomSheetView.findViewById(R.id.btn_favorito);
+                        img_favorito = bottomSheetView.findViewById(R.id.img_favorito);
+                        txt_favorito = bottomSheetView.findViewById(R.id.txt_favorito);
+                        if(sitio.getFavorito() == 1){
+                            img_favorito.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_red));
+                            txt_favorito.setText("Quitar de favoritos");
+                        }else{
+                            img_favorito.setImageDrawable(getResources().getDrawable(R.drawable.icon_favoriteee));
+                            txt_favorito.setText("Añadir a favoritos");
 
+                        }
                         Picasso.get()
                                 .load(Routes.directorio_imagenes+sitio.getRutaFoto())
                                 //.resize(70,70)
@@ -145,7 +181,28 @@ public class IndexCliente extends FragmentActivity implements OnMapReadyCallback
                         txt_nombre_sitio.setText(sitio.getNombre());
                         txt_direccion_sitio.setText(sitio.getDireccion());
                         txt_descripcion_sitio.setText(sitio.getDescripcion());
+                        btn_favorito.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if(sitio.getFavorito() == 0){
+                                    img_favorito.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_red));
+                                    txt_favorito.setText("Quitar de favoritos");
+                                }else{
+                                    img_favorito.setImageDrawable(getResources().getDrawable(R.drawable.icon_favoriteee));
+                                    txt_favorito.setText("Añadir a favoritos");
+                                }
+                                if(sitio.EstablecerEstadoFavorito(getApplicationContext())){
+                                    if(sitio.getFavorito() == 1) {
+                                        Toast.makeText(IndexCliente.this, "Se agrego a favoritos", Toast.LENGTH_SHORT).show();
+                                    }else{
+                                        Toast.makeText(IndexCliente.this, "Se quito de favoritos", Toast.LENGTH_SHORT).show();
+                                    }
+                                }else{
+                                    Toast.makeText(IndexCliente.this, "Ocurrio un error al intentar cambiar el estado", Toast.LENGTH_SHORT).show();
+                                }
 
+                            }
+                        });
                         bottomSheetDialog.setContentView(bottomSheetView);
                         bottomSheetDialog.show();
                     }
@@ -157,6 +214,7 @@ public class IndexCliente extends FragmentActivity implements OnMapReadyCallback
         Intent ver_sitio_actividad = getIntent();
         int id_actividad = ver_sitio_actividad.getIntExtra("id_actividad",0);
         if (id_actividad != 0){
+            nombreEventualidad.setTitle(ver_sitio_actividad.getStringExtra("nombreActividad"));
             points = new ArrayList<LatLng>();
             //lineOptions = new PolylineOptions();
             List<Sitio> array_sitios_actividad = SitioActividad.FindAllSitiosPorActividad(this, id_actividad);
@@ -174,7 +232,7 @@ public class IndexCliente extends FragmentActivity implements OnMapReadyCallback
                 @Override
                 public boolean onMarkerClick(Marker marker) {
                     LatLng posicion_sitio = marker.getPosition();
-                    Sitio sitio = Sitio.FindMarkerSitio(IndexCliente.this, posicion_sitio.latitude, posicion_sitio.longitude);
+                    final Sitio sitio = Sitio.FindMarkerSitio(IndexCliente.this, posicion_sitio.latitude, posicion_sitio.longitude);
                     if(sitio != null){
                         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(IndexCliente.this, R.style.BottomSheetDialogTheme);
                         View bottomSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_bottom_sheet_sitios, (LinearLayout) findViewById(R.id.bottom_sheet_sitio));
@@ -182,7 +240,16 @@ public class IndexCliente extends FragmentActivity implements OnMapReadyCallback
                         txt_direccion_sitio = bottomSheetView.findViewById(R.id.txt_direccion_sitio);
                         txt_descripcion_sitio = bottomSheetView.findViewById(R.id.txt_descripcion_sitio);
                         imagen_sitio = bottomSheetView.findViewById(R.id.imagen_sitio);
-
+                        btn_favorito = (LinearLayout) bottomSheetView.findViewById(R.id.btn_favorito);
+                        img_favorito = bottomSheetView.findViewById(R.id.img_favorito);
+                        txt_favorito = bottomSheetView.findViewById(R.id.txt_favorito);
+                        if(sitio.getFavorito() == 1){
+                            img_favorito.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_red));
+                            txt_favorito.setText("Quitar de favoritos");
+                        }else{
+                            img_favorito.setImageDrawable(getResources().getDrawable(R.drawable.icon_favoriteee));
+                            txt_favorito.setText("Añadir a favoritos");
+                        }
                         Picasso.get()
                                 .load(Routes.directorio_imagenes+sitio.getRutaFoto())
                                 //.resize(70,70)
@@ -192,7 +259,28 @@ public class IndexCliente extends FragmentActivity implements OnMapReadyCallback
                         txt_nombre_sitio.setText(sitio.getNombre());
                         txt_direccion_sitio.setText(sitio.getDireccion());
                         txt_descripcion_sitio.setText(sitio.getDescripcion());
+                        btn_favorito.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if(sitio.getFavorito() == 0){
+                                    img_favorito.setImageDrawable(getResources().getDrawable(R.drawable.ic_favorite_red));
+                                    txt_favorito.setText("Quitar de favoritos");
+                                }else{
+                                    img_favorito.setImageDrawable(getResources().getDrawable(R.drawable.icon_favoriteee));
+                                    txt_favorito.setText("Añadir a favoritos");
+                                }
+                                if(sitio.EstablecerEstadoFavorito(getApplicationContext())){
+                                    if(sitio.getFavorito() == 1) {
+                                        Toast.makeText(IndexCliente.this, "Se agrego a favoritos", Toast.LENGTH_SHORT).show();
+                                    }else{
+                                        Toast.makeText(IndexCliente.this, "Se quito de favoritos", Toast.LENGTH_SHORT).show();
+                                    }
+                                }else{
+                                    Toast.makeText(IndexCliente.this, "Ocurrio un error al intentar cambiar el estado", Toast.LENGTH_SHORT).show();
+                                }
 
+                            }
+                        });
                         bottomSheetDialog.setContentView(bottomSheetView);
                         bottomSheetDialog.show();
                     }
