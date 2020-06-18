@@ -13,7 +13,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ListaSitiosFavoritos"></activity>
+        <activity android:name=".ActivityPrincipal">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ListaSitiosFavoritos" />
         <activity android:name=".ListaSitios" />
         <activity android:name=".ListaActividades" />
         <activity android:name=".ListaEventos" />
@@ -25,11 +32,7 @@
         <activity
             android:name=".IndexCliente"
             android:label="@string/title_activity_maps">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
