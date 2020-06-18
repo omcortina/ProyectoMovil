@@ -37,7 +37,13 @@ public class BD extends SQLiteOpenHelper {
                 "latitud text," +
                 "longitud text," +
                 "ruta_foto text," +
-                "id_dominio_tipo integer" +
+                "id_dominio_tipo integer,"+
+                "favorito integer" +
+                ")");
+
+        db.execSQL("create table SitioFavorito(" +
+                "id_sitio_favorito integer primary key autoincrement ," +
+                "id_sitio integer " +
                 ")");
 
         db.execSQL("create table TipoSitio(" +

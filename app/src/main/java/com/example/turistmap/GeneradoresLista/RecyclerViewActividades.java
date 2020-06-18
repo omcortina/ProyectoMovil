@@ -61,7 +61,7 @@ public class RecyclerViewActividades extends RecyclerView.Adapter<RecyclerViewAc
         holder.txt_nombre_actividad.setText(actividad.getNombre().toUpperCase());
         holder.txt_descripcion_actividad.setText("Descripcion: "+actividad.getDescripcion());
 
-         ViewPagerActividades viewPagerActividades = new ViewPagerActividades(Actividad.ImagenesDeActividd(context, actividad.getId()), context);
+         ViewPagerActividades viewPagerActividades = new ViewPagerActividades(Actividad.ImagenesDeActividad(context, actividad.getId()), context);
          holder.viewPager_imagenes_actividad.setAdapter(viewPagerActividades);
 
         holder.btn_actividad_info.setOnClickListener(new View.OnClickListener() {
@@ -77,10 +77,12 @@ public class RecyclerViewActividades extends RecyclerView.Adapter<RecyclerViewAc
         holder.btn_mostrar_sitios_actividad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, IndexCliente.class);
+                Intent intentActividad = new Intent(context, IndexCliente.class);
                 int id_actividad = actividad.getId();
-                intent.putExtra("id_actividad", id_actividad);
-                context.startActivity(intent);
+                String nombreActividad = actividad.getNombre();
+                intentActividad.putExtra("nombreActividad",nombreActividad);
+                intentActividad.putExtra("id_actividad", id_actividad);
+                context.startActivity(intentActividad);
             }
         });
     }

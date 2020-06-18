@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
 import com.example.turistmap.BD;
 import com.example.turistmap.Config.Config;
 
@@ -20,6 +22,7 @@ public class Sitio {
     private String Longitud;
     private String RutaFoto;
     private int IdDominioTipo;
+    private int favorito;
 
     public Sitio() {
     }
@@ -96,6 +99,14 @@ public class Sitio {
         IdDominioTipo = idDominioTipo;
     }
 
+    public int getFavorito() {
+        return favorito;
+    }
+
+    public void setFavorito(int favorito) {
+        this.favorito = favorito;
+    }
+
     public void Save(Context context){
         BD admin = new BD(context, Config.database_name, null, 1);
         SQLiteDatabase db = admin.getWritableDatabase();
@@ -111,6 +122,14 @@ public class Sitio {
         registro.put("ruta_foto", this.RutaFoto);
         registro.put("id_dominio_tipo", this.IdDominioTipo);
 
+        String sql = "select * from SitioFavorito where id_sitio="+this.Id;
+        Cursor cursor = db.rawQuery(sql, null);
+
+        if (cursor.moveToFirst()){
+            registro.put("favorito", 1);
+        }else{
+            registro.put("favorito", 0);
+        }
         db.insert("Sitio", null, registro);
         db.close();
     }
@@ -135,6 +154,7 @@ public class Sitio {
                 sitio.Longitud = cursor.getString(6);
                 sitio.RutaFoto = cursor.getString(7);
                 sitio.IdDominioTipo = cursor.getInt(8);
+                sitio.favorito = cursor.getInt(cursor.getColumnIndex("favorito"));
                 lista.add(sitio);
             }while(cursor.moveToNext());
         }
@@ -159,11 +179,14 @@ public class Sitio {
             sitio.Longitud = cursor.getString(6);
             sitio.RutaFoto = cursor.getString(7);
             sitio.IdDominioTipo = cursor.getInt(8);
+            sitio.favorito = cursor.getInt(cursor.getColumnIndex("favorito"));
             return sitio;
         }
         db.close();
         return null;
     }
+
+
 
     public static Sitio FindMarkerSitio(Context context, double latitud, double longitud){
         BD admin = new BD(context, Config.database_name, null, 1);
@@ -182,6 +205,7 @@ public class Sitio {
             sitio.Longitud = cursor.getString(6);
             sitio.RutaFoto = cursor.getString(7);
             sitio.IdDominioTipo = cursor.getInt(8);
+            sitio.favorito = cursor.getInt(cursor.getColumnIndex("favorito"));
             return sitio;
         }
         db.close();
@@ -208,10 +232,64 @@ public class Sitio {
                 sitio.Longitud = cursor.getString(6);
                 sitio.RutaFoto = cursor.getString(7);
                 sitio.IdDominioTipo = cursor.getInt(8);
+                sitio.favorito = cursor.getInt(cursor.getColumnIndex("favorito"));
                 lista.add(sitio);
             }while(cursor.moveToNext());
         }
         db.close();
         return lista;
+    }
+    public static List<Sitio> FindAllFavoritos(Context context){
+        BD admin = new BD(context, Config.database_name, null, 1);
+        SQLiteDatabase db = admin.getWritableDatabase();
+        List<Sitio> lista = new ArrayList<>();
+
+        String sql = "select * from Sitio where favorito = 1";
+        Cursor cursor = db.rawQuery(sql, null);
+
+        if (cursor.moveToFirst()){
+            do{
+                Sitio sitio = new Sitio();
+                sitio.Id = Integer.parseInt(cursor.getString(0));
+                sitio.Codigo = cursor.getString(1);
+                sitio.Nombre = cursor.getString(2);
+                sitio.Direccion = cursor.getString(3);
+                sitio.Descripcion = cursor.getString(4);
+                sitio.Latitud = cursor.getString(5);
+                sitio.Longitud = cursor.getString(6);
+                sitio.RutaFoto = cursor.getString(7);
+                sitio.IdDominioTipo = cursor.getInt(8);
+                sitio.favorito = cursor.getInt(cursor.getColumnIndex("favorito"));
+                lista.add(sitio);
+            }while(cursor.moveToNext());
+        }
+        db.close();
+        return lista;
+    }
+
+    public boolean EstablecerEstadoFavorito(Context context){
+        try{
+            BD admin = new BD(context, Config.database_name, null, 1);
+            SQLiteDatabase db = admin.getWritableDatabase();
+            if(this.favorito == 0){
+                this.favorito = 1;
+                //insert
+                ContentValues registro = new ContentValues();
+                registro.put("id_sitio", this.Id);
+                db.insert("SitioFavorito",null,registro);
+            }else{
+                this.favorito = 0;
+                db.delete("SitioFavorito", "id_sitio = "+this.Id, null);
+                //delete
+            }
+            ContentValues registro = new ContentValues();
+            registro.put("favorito", this.favorito);
+            db.update("Sitio", registro, "id_sitio = "+this.Id, null);
+            db.close();
+            return true;
+        }catch (Exception e){
+            Log.d("Sitio", e.getMessage());
+            return false;
+        }
     }
 }

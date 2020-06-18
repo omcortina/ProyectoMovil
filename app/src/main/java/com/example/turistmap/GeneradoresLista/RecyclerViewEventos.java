@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+
 import com.example.turistmap.Model.Evento;
 import com.example.turistmap.Model.Sitio;
 import com.example.turistmap.IndexCliente;
@@ -27,6 +29,7 @@ public class RecyclerViewEventos extends RecyclerView.Adapter<RecyclerViewEvento
         private LinearLayout btn_mostrar_sitios_evento, btn_evento_info;
         private RecyclerView recycler_imagenes_evento;
         private ImageView img_evento;
+        private ViewPager viewPager_imagenes_evento;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -36,8 +39,9 @@ public class RecyclerViewEventos extends RecyclerView.Adapter<RecyclerViewEvento
             txt_descripcion_evento = (TextView) itemView.findViewById(R.id.txt_descripcion_evento);
             btn_mostrar_sitios_evento = (LinearLayout) itemView.findViewById(R.id.btn_mostrar_sitios_evento);
             btn_evento_info = (LinearLayout) itemView.findViewById(R.id.btn_evento_info);
-            recycler_imagenes_evento = (RecyclerView) itemView.findViewById(R.id.recycler_imagenes_evento);
+            //recycler_imagenes_evento = (RecyclerView) itemView.findViewById(R.id.recycler_imagenes_evento);
             img_evento = (ImageView) itemView.findViewById(R.id.img_evento);
+            viewPager_imagenes_evento = (ViewPager) itemView.findViewById(R.id.viewPager_imagenes_evento);
         }
     }
 
@@ -67,10 +71,17 @@ public class RecyclerViewEventos extends RecyclerView.Adapter<RecyclerViewEvento
         holder.txt_fecha_fin_evento.setText("Fecha Fin: "+evento.getFechaFin());
         holder.txt_descripcion_evento.setText("Descripcion: "+evento.getDescripcion());
 
+        /*
         holder.recycler_imagenes_evento.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
 
         RecyclerViewImagenesEvento adapter = new RecyclerViewImagenesEvento(Evento.ImagenesDelEvento(context, evento.getId()), context);
         holder.recycler_imagenes_evento.setAdapter(adapter);
+        */
+
+
+         ViewPagerEventos viewPagerEventos = new ViewPagerEventos(Evento.ImagenesDelEvento(context, evento.getId()), context);
+         holder.viewPager_imagenes_evento.setAdapter(viewPagerEventos);
+
 
         holder.btn_evento_info.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,10 +101,12 @@ public class RecyclerViewEventos extends RecyclerView.Adapter<RecyclerViewEvento
         holder.btn_mostrar_sitios_evento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, IndexCliente.class);
+                Intent intentEvento = new Intent(context, IndexCliente.class);
                 int id_evento = evento.getId();
-                intent.putExtra("id_evento", id_evento);
-                context.startActivity(intent);
+                String nombreEvento = evento.getNombre();
+                intentEvento.putExtra("nombreEvento",nombreEvento);
+                intentEvento.putExtra("id_evento", id_evento);
+                context.startActivity(intentEvento);
             }
         });
 

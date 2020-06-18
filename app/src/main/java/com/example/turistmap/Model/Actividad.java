@@ -107,7 +107,7 @@ public class Actividad {
         return null;
     }
 
-    public static List<Galeria> ImagenesDeActividd(Context context, int id){
+    public static List<Galeria> ImagenesDeActividad(Context context, int id){
         BD admin = new BD(context, Config.database_name, null, 1);
         SQLiteDatabase db = admin.getWritableDatabase();
         List<Galeria> lista = new ArrayList<>();
